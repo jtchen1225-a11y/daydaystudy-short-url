@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta http-equiv="refresh" content="0; url=https://jtchen1225-a11y.github.io/macau-distinguished-teachers/">
+  <link rel="canonical" href="https://jtchen1225-a11y.github.io/macau-distinguished-teachers/">
+  <title>澳門傑出教師</title>
+</head>
+<body>
+  <p>正在前往 <a href="https://jtchen1225-a11y.github.io/macau-distinguished-teachers/">澳門傑出教師</a>…</p>
+  <script>
+    (() => {
+      const target = "https://jtchen1225-a11y.github.io/macau-distinguished-teachers/";
+      try {
+        const source = new URL(window.location.href);
+        const destination = new URL(target);
+
+        // 將短網址後的 query parameters 一併帶到目的網址。
+        source.searchParams.forEach((value, key) => {
+          destination.searchParams.append(key, value);
+        });
+
+        // 如果目的網址本身沒有 hash，保留短網址的 hash。
+        if (source.hash && !destination.hash) {
+          destination.hash = source.hash;
+        }
+
+        window.location.replace(destination.toString());
+      } catch (error) {
+        window.location.replace(target);
+      }
+    })();
+  </script>
+</body>
+</html>
