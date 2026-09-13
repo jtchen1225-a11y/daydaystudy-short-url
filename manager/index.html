@@ -3,19 +3,48 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DayDayStudy Short URL Manager</title>
+  <title>DayDayStudy Short URL Manager V3</title>
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
   <header class="topbar">
     <div>
-      <h1>DayDayStudy Short URL Manager</h1>
-      <p>批量新增、檢查、匯入匯出、QR Code 與直接儲存 links.csv</p>
+      <div class="title-row"><h1>DayDayStudy Short URL Manager</h1><span class="version-badge">V3</span></div>
+      <p>批量短網址、QR Code、儲存與一鍵 Publish 到 GitHub</p>
     </div>
     <div class="status" id="saveStatus">尚未修改</div>
   </header>
 
   <main class="container">
+    <section class="card publish-card">
+      <div class="section-title-row toolbar-heading">
+        <div>
+          <h2>一鍵 Publish</h2>
+          <p>自動執行：儲存 links.csv → Build 驗證 → Commit links.csv → Push → 追蹤 GitHub Actions。</p>
+        </div>
+        <div class="toolbar wrap right">
+          <button id="refreshDeployBtn" class="secondary">更新部署狀態</button>
+          <button id="publishBtn" class="publish-primary">儲存並 Publish</button>
+        </div>
+      </div>
+
+      <div class="deploy-grid">
+        <div class="deploy-item"><span>Branch</span><strong id="gitBranch">—</strong></div>
+        <div class="deploy-item"><span>目前 Commit</span><strong id="gitCommit">—</strong></div>
+        <div class="deploy-item"><span>GitHub Actions</span><strong id="deployBadge" class="deploy-badge neutral">尚未檢查</strong></div>
+        <div class="deploy-item"><span>Repository</span><a id="repoLink" target="_blank" rel="noopener">—</a></div>
+      </div>
+
+      <div class="publish-options">
+        <label for="commitMessage">Commit message（可留空）</label>
+        <input id="commitMessage" type="text" maxlength="160" placeholder="例如：Add TIMSS and PISA short links">
+      </div>
+
+      <div id="deployMessage" class="message hidden"></div>
+      <pre id="publishLog" class="publish-log hidden"></pre>
+      <div class="small-note">安全設計：Publish 按鈕只會自動提交 <code>links.csv</code>，不會把其他程式碼修改一起 commit。</div>
+    </section>
+
     <section class="card config-card">
       <div class="section-title-row">
         <div>

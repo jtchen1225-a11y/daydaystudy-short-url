@@ -3,6 +3,9 @@ const state = {
   baseUrl: 'https://go.daydaystudy.top',
   dirty: false,
   qrAvailable: true,
+  gitInfo: null,
+  deployment: null,
+  publishing: false,
 };
 
 const $ = (id) => document.getElementById(id);
@@ -119,6 +122,7 @@ function render() {
       <td><div class="actions">
         <button class="secondary" data-action="auto" data-index="${index}">Auto</button>
         <button class="secondary" data-action="qr" data-index="${index}">QR</button>
+        <button class="secondary" data-action="copy" data-index="${index}">複製</button>
         <button class="danger" data-action="delete" data-index="${index}">刪除</button>
       </div></td>`;
     body.appendChild(tr);
@@ -139,16 +143,22 @@ function render() {
 
 async function loadAll() {
   try {
-    const [linksResp, configResp] = await Promise.all([fetch('/api/links'), fetch('/api/config')]);
+    const [linksResp, configResp, gitResp] = await Promise.all([
+      fetch('/api/links'), fetch('/api/config'), fetch('/api/git-status')
+    ]);
     const linksData = await linksResp.json();
     const configData = await configResp.json();
+    const gitData = await gitResp.json();
     state.links = linksData.links || [];
     state.baseUrl = configData.base_url || state.baseUrl;
     state.qrAvailable = configData.qr_available !== false;
+    state.gitInfo = gitData;
     $('baseUrl').value = state.baseUrl;
     state.dirty = false;
     setStatus('已載入 links.csv', 'saved');
     render();
+    renderGitInfo();
+    refreshDeploymentStatus(false).catch(() => {});
   } catch (e) {
     setStatus('載入失敗', 'error');
     alert(`載入失敗：${e.message}`);
@@ -312,6 +322,177 @@ async function downloadAllQr() {
   URL.revokeObjectURL(a.href);
 }
 
+
+
+function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+
+async function copyText(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    ta.remove();
+  }
+}
+
+function renderGitInfo() {
+  const info = state.gitInfo || {};
+  $('gitBranch').textContent = info.available ? (info.branch || '—') : '不可用';
+  $('gitCommit').textContent = info.available ? (info.short_sha || '—') : '—';
+  const repo = info.github;
+  const link = $('repoLink');
+  if (repo?.repository_url) {
+    link.href = repo.repository_url;
+    link.textContent = `${repo.owner}/${repo.repo}`;
+  } else {
+    link.removeAttribute('href');
+    link.textContent = '未識別 GitHub remote';
+  }
+}
+
+function setDeployMessage(text, type='') {
+  const el = $('deployMessage');
+  if (!text) {
+    el.className = 'message hidden';
+    el.textContent = '';
+    return;
+  }
+  el.className = `message ${type}`.trim();
+  el.textContent = text;
+}
+
+function renderDeployment(data) {
+  state.deployment = data;
+  const badge = $('deployBadge');
+  badge.className = 'deploy-badge neutral';
+  const run = data?.run;
+  if (!data?.available) {
+    badge.textContent = '無法取得';
+    badge.className = 'deploy-badge warn';
+    if (data?.error) setDeployMessage(data.error, 'warn');
+    return;
+  }
+  if (!run) {
+    badge.textContent = '尚無紀錄';
+    badge.className = 'deploy-badge neutral';
+    if (data?.message) setDeployMessage(data.message, '');
+    return;
+  }
+
+  const status = run.status;
+  const conclusion = run.conclusion;
+  if (status !== 'completed') {
+    badge.textContent = status === 'queued' ? '排隊中' : '部署中';
+    badge.className = 'deploy-badge running';
+    setDeployMessage(`GitHub Actions：${run.name || 'Workflow'} 正在執行。`, '');
+  } else if (conclusion === 'success') {
+    badge.textContent = '部署成功';
+    badge.className = 'deploy-badge ok';
+    setDeployMessage('GitHub Actions 已成功完成，短網址通常已可使用。', 'ok');
+  } else {
+    badge.textContent = `失敗：${conclusion || 'unknown'}`;
+    badge.className = 'deploy-badge error';
+    setDeployMessage(`GitHub Actions 未成功完成：${conclusion || 'unknown'}`, 'error');
+  }
+
+  if (run.html_url) {
+    const suffix = `\nActions：${run.html_url}`;
+    $('deployMessage').textContent += suffix;
+  }
+}
+
+async function refreshGitInfo() {
+  const resp = await fetch('/api/git-status', {cache:'no-store'});
+  const data = await resp.json();
+  state.gitInfo = data;
+  renderGitInfo();
+  return data;
+}
+
+async function refreshDeploymentStatus(showMessage=true, sha='') {
+  if (showMessage) setDeployMessage('正在取得 GitHub Actions 狀態…');
+  const q = sha ? `?sha=${encodeURIComponent(sha)}` : '';
+  const resp = await fetch(`/api/deployment-status${q}`, {cache:'no-store'});
+  const data = await resp.json();
+  renderDeployment(data);
+  return data;
+}
+
+async function pollDeployment(sha) {
+  for (let i=0; i<30; i++) {
+    const data = await refreshDeploymentStatus(false, sha);
+    const run = data?.run;
+    if (run?.status === 'completed') return data;
+    setDeployMessage(`已 Push。正在等待 GitHub Actions…（${i + 1}/30）`);
+    await sleep(4000);
+  }
+  setDeployMessage('已 Push，但兩分鐘內尚未取得完成狀態。可按「更新部署狀態」再查。', 'warn');
+  return null;
+}
+
+async function publishToGitHub() {
+  const { errors } = validate();
+  if (errors.size) {
+    render();
+    alert('仍有資料錯誤，請先修正紅色列。');
+    return;
+  }
+  if (state.publishing) return;
+
+  state.publishing = true;
+  const button = $('publishBtn');
+  button.disabled = true;
+  button.textContent = 'Publishing…';
+  $('publishLog').className = 'publish-log hidden';
+
+  try {
+    setDeployMessage('步驟 1/4：儲存 links.csv…');
+    await saveLinks();
+
+    setDeployMessage('步驟 2/4：Build 驗證、Commit、Push…');
+    const resp = await fetch('/api/publish', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({commit_message:$('commitMessage').value.trim()})
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || 'Publish 失敗');
+
+    state.gitInfo = data.git || state.gitInfo;
+    renderGitInfo();
+    const log = [
+      '=== Build ===', data.build_output || '(no output)',
+      '', '=== Commit ===', data.commit_output || '(no output)',
+      '', '=== Push ===', data.push_output || '(no output)'
+    ].join('\n');
+    $('publishLog').textContent = log;
+    $('publishLog').className = 'publish-log';
+    $('commitMessage').value = '';
+
+    const sha = data.git?.sha || '';
+    setDeployMessage('步驟 3/4：Push 完成，等待 GitHub Actions…', 'ok');
+    await pollDeployment(sha);
+    setDeployMessage(
+      state.deployment?.run?.conclusion === 'success'
+        ? '步驟 4/4：部署成功。短網址已正式更新。'
+        : $('deployMessage').textContent,
+      state.deployment?.run?.conclusion === 'success' ? 'ok' : ''
+    );
+  } catch (err) {
+    setDeployMessage(`Publish 失敗：${err.message}`, 'error');
+    alert(`Publish 失敗：${err.message}`);
+  } finally {
+    state.publishing = false;
+    button.disabled = false;
+    button.textContent = '儲存並 Publish';
+    refreshGitInfo().catch(() => {});
+  }
+}
+
 body.addEventListener('input', e => {
   const idx = Number(e.target.dataset.index);
   const field = e.target.dataset.field;
@@ -342,6 +523,11 @@ body.addEventListener('click', e => {
     if (!row.title) row.title = row.short_code;
     markDirty(); render();
   } else if (btn.dataset.action === 'qr') showQr(idx);
+  else if (btn.dataset.action === 'copy') {
+    const row = state.links[idx];
+    const url = `${state.baseUrl.replace(/\/$/,'')}/${row.short_code}`;
+    copyText(url).then(() => setStatus(`已複製 ${row.short_code}`, 'saved'));
+  }
 });
 
 $('batchAddBtn').addEventListener('click', batchAdd);
@@ -353,6 +539,8 @@ $('csvFile').addEventListener('change', async e => { try { if (e.target.files[0]
 $('saveBtn').addEventListener('click', () => saveLinks().catch(e => alert(e.message)));
 $('saveConfigBtn').addEventListener('click', () => saveConfig().catch(e => alert(e.message)));
 $('qrZipBtn').addEventListener('click', () => downloadAllQr().catch(e => alert(e.message)));
+$('publishBtn').addEventListener('click', () => publishToGitHub());
+$('refreshDeployBtn').addEventListener('click', () => refreshDeploymentStatus(true).catch(e => setDeployMessage(e.message, 'error')));
 $('searchInput').addEventListener('input', render);
 $('clearSearchBtn').addEventListener('click', () => { $('searchInput').value=''; render(); });
 window.addEventListener('beforeunload', e => { if (state.dirty) { e.preventDefault(); e.returnValue=''; } });
