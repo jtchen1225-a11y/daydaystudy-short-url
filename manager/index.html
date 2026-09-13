@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DayDayStudy Short URL Manager</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>DayDayStudy Short URL Manager</h1>
+      <p>批量新增、檢查、匯入匯出、QR Code 與直接儲存 links.csv</p>
+    </div>
+    <div class="status" id="saveStatus">尚未修改</div>
+  </header>
+
+  <main class="container">
+    <section class="card config-card">
+      <div class="section-title-row">
+        <div>
+          <h2>短網址網域</h2>
+          <p>QR Code 與預覽會使用此網址。</p>
+        </div>
+      </div>
+      <div class="inline-form">
+        <input id="baseUrl" type="url" value="https://go.daydaystudy.top" spellcheck="false">
+        <button id="saveConfigBtn" class="secondary">儲存網域</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-title-row">
+        <div>
+          <h2>批量貼上</h2>
+          <p>每行可貼「URL」、「URL + Tab + 標題」，或「short_code + Tab + URL + Tab + 標題」。</p>
+        </div>
+      </div>
+      <textarea id="batchInput" rows="7" placeholder="https://example.com/course-one/&#10;https://example.com/course-two/&#9;課程二&#10;timss&#9;https://example.com/timss/&#9;TIMSS"></textarea>
+      <div class="toolbar wrap">
+        <button id="batchAddBtn" class="primary">批量加入</button>
+        <button id="clearBatchBtn" class="secondary">清空貼上區</button>
+        <label class="checkline"><input id="skipDuplicateTarget" type="checkbox" checked> 自動略過已存在的相同目標網址</label>
+      </div>
+      <div id="batchResult" class="message hidden"></div>
+    </section>
+
+    <section class="card">
+      <div class="section-title-row toolbar-heading">
+        <div>
+          <h2>短網址清單</h2>
+          <p><span id="rowCount">0</span> 筆；紅色表示需要修正，黃色表示目標網址重複。</p>
+        </div>
+        <div class="toolbar wrap right">
+          <button id="addRowBtn" class="secondary">＋ 新增一列</button>
+          <button id="importBtn" class="secondary">匯入 CSV</button>
+          <button id="exportBtn" class="secondary">匯出 CSV</button>
+          <button id="qrZipBtn" class="secondary">下載全部 QR</button>
+          <button id="saveBtn" class="primary">儲存 links.csv</button>
+          <input id="csvFile" type="file" accept=".csv,text/csv" hidden>
+        </div>
+      </div>
+
+      <div class="filter-row">
+        <input id="searchInput" type="search" placeholder="搜尋 short code、標題或網址…">
+        <button id="clearSearchBtn" class="ghost">清除</button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th class="col-enabled">啟用</th>
+              <th class="col-code">Short code</th>
+              <th>Target URL</th>
+              <th>標題</th>
+              <th class="col-preview">短網址</th>
+              <th class="col-actions">操作</th>
+            </tr>
+          </thead>
+          <tbody id="linksBody"></tbody>
+        </table>
+      </div>
+      <div id="validationSummary" class="message hidden"></div>
+    </section>
+  </main>
+
+  <dialog id="qrDialog">
+    <form method="dialog" class="dialog-card">
+      <button class="dialog-close" aria-label="關閉">×</button>
+      <h3 id="qrTitle">QR Code</h3>
+      <img id="qrImage" alt="QR Code">
+      <code id="qrUrl"></code>
+      <div class="toolbar center">
+        <a id="qrDownload" class="button-link primary" download>下載 PNG</a>
+        <button class="secondary">關閉</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="/app.js"></script>
+</body>
+</html>
