@@ -27,6 +27,7 @@ CONFIG_FILE = ROOT / "config.json"
 UI_DIR = ROOT / "manager"
 BACKUP_DIR = ROOT / "backups"
 PUBLISH_LOCK = threading.Lock()
+PUSH_RETRY_DELAYS = (0, 4, 8)
 
 CODE_RE = re.compile(r"^[a-z0-9](?:[a-z0-9/_-]*[a-z0-9])?$")
 RESERVED_CODES = {"index", "404", "assets", "admin", "manager"}
@@ -225,6 +226,159 @@ def parse_github_remote(remote: str) -> tuple[str, str] | None:
     return None
 
 
+
+def remote_host(remote: str) -> str:
+    remote = (remote or "").strip()
+    if remote.startswith("git@") and ":" in remote:
+        return remote.split("@", 1)[1].split(":", 1)[0].strip()
+    parsed = urlparse(remote)
+    if parsed.hostname:
+        return parsed.hostname
+    return "github.com"
+
+
+def dns_preflight(remote: str | None = None, timeout: int = 10) -> dict:
+    """
+    Check whether the Git remote hostname resolves through WSL/glibc DNS.
+    `getent` is used deliberately because it exercises the same Linux resolver
+    path that SSH/Git will use.
+    """
+    if remote is None:
+        remote_proc = run_command(["git", "remote", "get-url", "origin"], check=False)
+        remote = remote_proc.stdout.strip() if remote_proc.returncode == 0 else ""
+
+    host = remote_host(remote)
+    try:
+        proc = subprocess.run(
+            ["getent", "hosts", host],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            timeout=timeout,
+            check=False,
+        )
+    except FileNotFoundError:
+        return {
+            "ok": False,
+            "host": host,
+            "category": "resolver",
+            "error": "WSL 找不到 getent，無法執行 DNS 預檢。",
+            "addresses": [],
+        }
+    except subprocess.TimeoutExpired:
+        return {
+            "ok": False,
+            "host": host,
+            "category": "dns",
+            "error": f"DNS 預檢逾時：{host}",
+            "addresses": [],
+        }
+
+    if proc.returncode != 0 or not proc.stdout.strip():
+        detail = (proc.stderr or proc.stdout or "").strip()
+        return {
+            "ok": False,
+            "host": host,
+            "category": "dns",
+            "error": detail or f"無法解析 {host}",
+            "addresses": [],
+        }
+
+    addresses = []
+    for line in proc.stdout.splitlines():
+        parts = line.split()
+        if parts and parts[0] not in addresses:
+            addresses.append(parts[0])
+
+    return {
+        "ok": True,
+        "host": host,
+        "category": "ok",
+        "addresses": addresses[:6],
+        "message": f"{host} DNS 正常",
+    }
+
+
+def classify_push_error(output: str) -> str:
+    lower = (output or "").lower()
+    dns_patterns = (
+        "could not resolve hostname",
+        "temporary failure in name resolution",
+        "name or service not known",
+        "nodename nor servname provided",
+    )
+    auth_patterns = (
+        "permission denied",
+        "publickey",
+        "authentication failed",
+        "repository not found",
+        "could not read from remote repository",
+    )
+    if any(pattern in lower for pattern in dns_patterns):
+        return "dns"
+    if any(pattern in lower for pattern in auth_patterns):
+        return "auth"
+    return "git"
+
+
+def push_with_retries(branch: str, attempts: int = 3) -> dict:
+    attempts = max(1, min(int(attempts), len(PUSH_RETRY_DELAYS)))
+    logs = []
+    actual_attempts = 0
+    last_dns = None
+    last_output = ""
+    last_category = "git"
+
+    for index in range(attempts):
+        actual_attempts = index + 1
+        delay = PUSH_RETRY_DELAYS[index]
+        if delay:
+            time.sleep(delay)
+
+        dns = dns_preflight()
+        last_dns = dns
+        logs.append(
+            f"[{index + 1}/{attempts}] DNS "
+            + (f"OK: {', '.join(dns.get('addresses') or [])}" if dns.get("ok") else f"FAIL: {dns.get('error')}")
+        )
+        if not dns.get("ok"):
+            last_category = "dns"
+            last_output = dns.get("error", "DNS 預檢失敗")
+            continue
+
+        proc = run_command(["git", "push", "origin", branch], timeout=90, check=False)
+        output = (proc.stderr or proc.stdout or "").strip()
+        if proc.stdout and proc.stderr:
+            output = (proc.stdout.strip() + "\n" + proc.stderr.strip()).strip()
+        last_output = output or ("Push 完成" if proc.returncode == 0 else "Git push 失敗")
+        logs.append(f"[{index + 1}/{attempts}] git push exit={proc.returncode}\n{last_output}")
+
+        if proc.returncode == 0:
+            return {
+                "ok": True,
+                "attempts": actual_attempts,
+                "dns": dns,
+                "category": "ok",
+                "output": last_output,
+                "log": "\n\n".join(logs),
+                "retryable": False,
+            }
+
+        last_category = classify_push_error(last_output)
+        if last_category != "dns":
+            break
+
+    return {
+        "ok": False,
+        "attempts": actual_attempts,
+        "dns": last_dns,
+        "category": last_category,
+        "output": last_output,
+        "log": "\n\n".join(logs),
+        "retryable": last_category == "dns",
+    }
+
+
 def git_repo_info() -> dict:
     inside = run_command(["git", "rev-parse", "--is-inside-work-tree"], check=False)
     if inside.returncode != 0 or inside.stdout.strip() != "true":
@@ -242,14 +396,36 @@ def git_repo_info() -> dict:
     dirty_proc = run_command(["git", "status", "--porcelain", "--", "links.csv"], check=False)
     links_dirty = bool(dirty_proc.stdout.strip())
 
+    upstream_proc = run_command(
+        ["git", "rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}"],
+        check=False,
+    )
+    upstream = upstream_proc.stdout.strip() if upstream_proc.returncode == 0 else ""
+    ahead = 0
+    behind = 0
+    if upstream:
+        counts = run_command(
+            ["git", "rev-list", "--left-right", "--count", f"HEAD...{upstream}"],
+            check=False,
+        )
+        if counts.returncode == 0:
+            parts = counts.stdout.strip().split()
+            if len(parts) == 2 and all(part.isdigit() for part in parts):
+                ahead, behind = int(parts[0]), int(parts[1])
+
     result = {
         "available": True,
         "branch": branch,
         "remote": remote,
+        "remote_host": remote_host(remote),
         "sha": sha,
         "short_sha": short_sha,
         "subject": subject,
         "links_dirty": links_dirty,
+        "upstream": upstream,
+        "ahead": ahead,
+        "behind": behind,
+        "pending_push": ahead > 0,
     }
     github = parse_github_remote(remote)
     if github:
@@ -334,10 +510,9 @@ def github_deployment_status(target_sha: str | None = None) -> dict:
 
 def publish_links(commit_message: str | None = None) -> dict:
     """
-    Build, commit links.csv only, and push the current branch.
-
-    Deliberately stages only links.csv so local code edits are never committed by
-    the Publish button by accident. GitHub Actions performs the production build.
+    Save/build/commit is handled before this function by the UI/API flow.
+    This function builds, commits links.csv only, performs DNS preflight,
+    retries push on transient DNS failures, and returns structured step status.
     """
     if not PUBLISH_LOCK.acquire(blocking=False):
         raise RuntimeError("另一個 Publish 正在執行，請稍候。")
@@ -351,10 +526,21 @@ def publish_links(commit_message: str | None = None) -> dict:
         if not remote:
             raise RuntimeError("找不到 Git remote：origin")
 
-        build_proc = run_command([sys.executable, str(ROOT / "build.py")], timeout=90)
-        run_command(["git", "add", "--", "links.csv"])
+        steps = {
+            "build": "pending",
+            "commit": "pending",
+            "dns": "pending",
+            "push": "pending",
+        }
 
-        diff_proc = run_command(["git", "diff", "--cached", "--quiet", "--", "links.csv"], check=False)
+        build_proc = run_command([sys.executable, str(ROOT / "build.py")], timeout=90)
+        steps["build"] = "ok"
+
+        run_command(["git", "add", "--", "links.csv"])
+        diff_proc = run_command(
+            ["git", "diff", "--cached", "--quiet", "--", "links.csv"],
+            check=False,
+        )
         committed = diff_proc.returncode == 1
         commit_output = "links.csv 沒有新的變更，不需要建立 commit。"
 
@@ -366,26 +552,86 @@ def publish_links(commit_message: str | None = None) -> dict:
                 raise ValueError("Commit message 最長 160 個字元")
             commit_proc = run_command(["git", "commit", "-m", message], timeout=60)
             commit_output = (commit_proc.stdout or commit_proc.stderr).strip()
+            steps["commit"] = "ok"
+        else:
+            steps["commit"] = "skipped"
 
-        push_proc = run_command(["git", "push", "origin", branch], timeout=180)
+        push = push_with_retries(branch, attempts=3)
+        steps["dns"] = "ok" if (push.get("dns") or {}).get("ok") else "error"
+        steps["push"] = "ok" if push.get("ok") else "error"
+
         info_after = git_repo_info()
         github = info_after.get("github") or {}
 
         return {
-            "ok": True,
+            "ok": bool(push.get("ok")),
             "committed": committed,
+            "steps": steps,
             "build_output": (build_proc.stdout or build_proc.stderr).strip(),
             "commit_output": commit_output,
-            "push_output": (push_proc.stdout or push_proc.stderr).strip() or "Push 完成",
+            "push_output": push.get("output", ""),
+            "push_log": push.get("log", ""),
+            "push_category": push.get("category"),
+            "push_attempts": push.get("attempts", 0),
+            "dns": push.get("dns"),
+            "retryable": bool(push.get("retryable")),
             "git": info_after,
             "actions_url": github.get("actions_url"),
+            "error": None if push.get("ok") else (
+                "GitHub DNS 暫時不可用；本機 commit 已保留，可稍後按「重新 Push」。"
+                if push.get("category") == "dns"
+                else f"git push 失敗：{push.get('output') or '未知錯誤'}"
+            ),
+        }
+    finally:
+        PUBLISH_LOCK.release()
+
+
+def retry_push() -> dict:
+    """Push existing local commits only. Never rebuilds or creates a new commit."""
+    if not PUBLISH_LOCK.acquire(blocking=False):
+        raise RuntimeError("另一個 Publish / Push 正在執行，請稍候。")
+
+    try:
+        info_before = git_repo_info()
+        if not info_before.get("available"):
+            raise RuntimeError(info_before.get("error", "Git repository 不可用"))
+        if info_before.get("links_dirty"):
+            raise RuntimeError("links.csv 還有未提交修改。請使用「儲存並 Publish」，不要使用重新 Push。")
+
+        branch = info_before.get("branch") or "main"
+        push = push_with_retries(branch, attempts=3)
+        info_after = git_repo_info()
+        github = info_after.get("github") or {}
+
+        return {
+            "ok": bool(push.get("ok")),
+            "steps": {
+                "build": "skipped",
+                "commit": "skipped",
+                "dns": "ok" if (push.get("dns") or {}).get("ok") else "error",
+                "push": "ok" if push.get("ok") else "error",
+            },
+            "push_output": push.get("output", ""),
+            "push_log": push.get("log", ""),
+            "push_category": push.get("category"),
+            "push_attempts": push.get("attempts", 0),
+            "dns": push.get("dns"),
+            "retryable": bool(push.get("retryable")),
+            "git": info_after,
+            "actions_url": github.get("actions_url"),
+            "error": None if push.get("ok") else (
+                "GitHub DNS 仍未恢復。請稍後再按「重新 Push」。"
+                if push.get("category") == "dns"
+                else f"git push 失敗：{push.get('output') or '未知錯誤'}"
+            ),
         }
     finally:
         PUBLISH_LOCK.release()
 
 
 class Handler(BaseHTTPRequestHandler):
-    server_version = "DayDayStudyManager/3.0"
+    server_version = "DayDayStudyManager/3.1.1"
 
     def log_message(self, fmt, *args):
         print(f"[{self.log_date_time_string()}] {fmt % args}")
@@ -435,6 +681,8 @@ class Handler(BaseHTTPRequestHandler):
             return self.send_json(cfg)
         if path == "/api/git-status":
             return self.send_json(git_repo_info())
+        if path == "/api/dns-check":
+            return self.send_json(dns_preflight())
         if path == "/api/deployment-status":
             qs = parse_qs(parsed.query)
             sha = unquote(qs.get("sha", [""])[0]).strip() or None
@@ -478,7 +726,11 @@ class Handler(BaseHTTPRequestHandler):
                 data = self.read_json()
                 message = str(data.get("commit_message", "")).strip()
                 result = publish_links(message or None)
-                return self.send_json(result)
+                return self.send_json(result, 200 if result.get("ok") else 409)
+
+            if parsed.path == "/api/retry-push":
+                result = retry_push()
+                return self.send_json(result, 200 if result.get("ok") else 409)
 
             if parsed.path == "/api/qr-zip":
                 data = self.read_json()
@@ -528,14 +780,14 @@ def main():
     args = parser.parse_args()
 
     url = f"http://{args.host}:{args.port}"
-    print("DayDayStudy Short URL Manager V3")
+    print("DayDayStudy Short URL Manager V3.1.1")
     print(f"管理頁：{url}")
     print(f"資料檔：{LINKS_FILE}")
     print(f"QR Code：{'可用' if QR_AVAILABLE else '不可用（請安裝 requirements.txt）'}")
     info = git_repo_info()
     if info.get("available"):
         print(f"Git：{info.get('branch', '?')} @ {info.get('short_sha', '?')}")
-        print("Publish：只會自動提交 links.csv，不會提交其他本機修改。")
+        print("Publish：V3.1 啟用 DNS 預檢、Push 自動重試、重新 Push 與背景 Actions 狀態。")
     else:
         print(f"Git：不可用（{info.get('error', '未知錯誤')}）")
     print("按 Ctrl+C 關閉。")
