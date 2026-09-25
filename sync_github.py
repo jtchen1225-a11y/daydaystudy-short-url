@@ -152,7 +152,7 @@ def sync(owners=None, auto_push=True):
         pref_code = CUSTOM_ALIASES.get(name, name).lower()
 
         # 檢查是否已在 links.csv
-        if pref_code not in seen_codes and norm_target not in seen_targets:
+        if pref_code not in seen_codes:
             rows.append({
                 "short_code": pref_code,
                 "target_url": target,
