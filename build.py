@@ -212,6 +212,7 @@ def build():
     (OUTPUT_DIR / "index.html").write_text(home_html(len(rows)), encoding="utf-8")
     (OUTPUT_DIR / "404.html").write_text(not_found_html(), encoding="utf-8")
     (OUTPUT_DIR / ".nojekyll").write_text("", encoding="utf-8")
+    (OUTPUT_DIR / "CNAME").write_text("www.daydaystudy.top\n", encoding="utf-8")
 
     print(f"完成：已生成 {len(rows)} 個短網址")
     for row in rows:
