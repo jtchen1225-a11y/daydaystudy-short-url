@@ -53,25 +53,7 @@ CUSTOM_ALIASES = {
     "um-dissertation-formatter-api": "um-api",
     "opencode-github-test": "opencode-test",
     "daydaystudy-short-url": "admin",
-
-    # mathruffian-dot
-    "math-sequence-games": "sequence",
-    "seat-chart-generator": "seat",
-    "blackhole-war": "blackhole",
-    "quadratic-function-graph": "quadratic",
-    "tetris-game": "tetris",
-    "classroom-tools-9": "tools9",
-    "shouzhu-daitu": "shouzhu",
-    "math-graph-tool": "graph",
-    "delin-campus-tour-system": "delin",
-    "airport-vocab-game": "airport",
-    "2026-fraction-cooking-rescue": "fraction",
-    "taigi-teaching-agent-plan": "taigi",
-    "super-teacher-2026": "superteacher",
-    "triangle-geometry-8": "geometry8",
-    "ch4-2-inequality-slides": "inequality",
-    "opencode-coordinate-game": "coordinate",
-    "firebase-wordcloud": "livecloud",
+    "math-jae-topics": "jae",
 }
 
 def to_wsl_path(p: str) -> Path:
@@ -262,7 +244,7 @@ def cmd_add(args):
 
 def cmd_sync(args):
     """全量同步 GitHub 倉庫"""
-    owners = args.owners or ["jtchen1225-a11y", "mathruffian-dot"]
+    owners = args.owners or ["jtchen1225-a11y"]
     gh_cmd = get_gh_cmd()
 
     print("=" * 60)
@@ -380,7 +362,7 @@ def main():
     add_parser.add_argument("--no-push", action="store_true", help="僅生成不推送到遠端")
 
     sync_parser = subparsers.add_parser("sync", help="全量同步 GitHub 倉庫")
-    sync_parser.add_argument("--owners", "-o", nargs="+", default=["jtchen1225-a11y", "mathruffian-dot"], help="目標 GitHub 帳號清單")
+    sync_parser.add_argument("--owners", "-o", nargs="+", default=["jtchen1225-a11y"], help="目標 GitHub 帳號清單")
     sync_parser.add_argument("--no-push", action="store_true", help="僅生成不推送到遠端")
 
     list_parser = subparsers.add_parser("list", help="查詢現有短網址")

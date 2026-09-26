@@ -211,6 +211,4 @@ def sync(owners=None, auto_push=True):
 
 if __name__ == "__main__":
     owners = ["jtchen1225-a11y"]
-    if "--all" in sys.argv:
-        owners = ["jtchen1225-a11y", "mathruffian-dot"]
     sync(owners=owners, auto_push=True)
