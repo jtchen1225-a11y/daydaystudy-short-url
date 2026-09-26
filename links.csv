@@ -1,11 +1,11 @@
 short_code,target_url,title,enabled
 teacher,https://jtchen1225-a11y.github.io/macau-distinguished-teachers/,澳門傑出教師,1
-b1,https://github.com/jtchen1225-a11y/math-b1-review,math-b1-review,1
-b2,https://github.com/jtchen1225-a11y/math-b2-review,math-b2-review,1
-b3,https://github.com/jtchen1225-a11y/math-b3-review,math-b3-review,1
-b4,https://github.com/jtchen1225-a11y/math-b4-review,math-b4-review,1
+b1,https://jtchen1225-a11y.github.io/math-b1-review/,math-b1-review,1
+b2,https://jtchen1225-a11y.github.io/math-b2-review/,math-b2-review,1
+b3,https://jtchen1225-a11y.github.io/math-b3-review/,math-b3-review,1
+b4,https://jtchen1225-a11y.github.io/math-b4-review/,math-b4-review,1
 f6,https://jtchen1225-a11y.github.io/math-review-deck/,math-review-deck,1
-p4lab,https://jtchen1225-a11y.github.io/timss-p4-lab-ipad/#W01,timss-p4-lab-ipad,1
+p4lab,https://jtchen1225-a11y.github.io/timss-p4-lab-ipad/,timss-p4-lab-ipad,1
 7a,https://jtchen1225-a11y.github.io/math-j7a-review/,math-j7a-review,1
 7b,https://jtchen1225-a11y.github.io/math-j7b-review/,math-j7b-review,1
 8a,https://jtchen1225-a11y.github.io/math-j8a-review/,math-j8a-review,1
@@ -14,7 +14,7 @@ p4lab,https://jtchen1225-a11y.github.io/timss-p4-lab-ipad/#W01,timss-p4-lab-ipad
 9b,https://jtchen1225-a11y.github.io/math-j9b-review/,math-j9b-review,1
 opencode,https://jtchen1225-a11y.github.io/cdsj5-math-opencode-workshop/,cdsj5-math-opencode-workshop,1
 pisa2025,https://jtchen1225-a11y.github.io/pisa-2025-macau-curriculum-report/,pisa-2025-macau-curriculum-report,1
-pisa,https://jtchen1225-a11y.github.io/pisa-2025-macau-curriculum-report/index.html#scorecard,index-html,1
+pisa,https://jtchen1225-a11y.github.io/pisa-2025-macau-curriculum-report/,index-html,1
 macau-uni-bonus-points-guide,https://jtchen1225-a11y.github.io/macau-uni-bonus-points-guide/,macau-uni-bonus-points-guide,1
 calculus,https://jtchen1225-a11y.github.io/math-review-deck/calculus.html,calculus-html,1
 features,https://jtchen1225-a11y.github.io/cdsj5-section-features/,cdsj5-section-features,1
@@ -93,3 +93,146 @@ t7,https://jtchen1225-a11y.github.io/math-jae-topics/topic07.html,Topic 07,1
 topic8,https://jtchen1225-a11y.github.io/math-jae-topics/topic08.html,Topic 08,1
 topic08,https://jtchen1225-a11y.github.io/math-jae-topics/topic08.html,Topic 08,1
 t8,https://jtchen1225-a11y.github.io/math-jae-topics/topic08.html,Topic 08,1
+geometry8,https://mathruffian-dot.github.io/triangle-geometry-8/,809 班數學教材與工具總覽：會考題庫、線上測驗、全冊複習互動簡報,1
+triangle-geometry-8,https://mathruffian-dot.github.io/triangle-geometry-8/,809 班數學教材與工具總覽：會考題庫、線上測驗、全冊複習互動簡報,1
+interact,https://github.com/mathruffian-dot/InterAct,InterAct real-time classroom interaction web app,1
+yizi-qianjin-practice,https://mathruffian-dot.github.io/yizi-qianjin-practice/,公視《一字千金》21季單人賽 四大單元練習系統（手寫辨識＋筆順描紅）,1
+cloudflare-d1-oauth-agent-guide,https://github.com/mathruffian-dot/cloudflare-d1-oauth-agent-guide,Cloudflare + D1 官方 OAuth 連接指南與 AI Agent 提示詞 v1.1,1
+taigi-teaching-agent,https://github.com/mathruffian-dot/taigi-teaching-agent,臺語教材 AI Agent：依 108 課綱自動生成台語講義、測驗、互動網站、教學影片與語音教材（意傳媠聲 TTS＋教育部官方音檔＋臺羅標音檢核）,1
+universal-presentation-deck,https://github.com/mathruffian-dot/universal-presentation-deck,"Universal skill for turning topics, docs, and repos into editable presentation decks",1
+gemma4-12b-setup,https://github.com/mathruffian-dot/gemma4-12b-setup,本機 Gemma4 12B 一鍵安裝腳本與 opencode 設定,1
+wayground-math-quiz,https://github.com/mathruffian-dot/wayground-math-quiz,Agent-neutral toolkit for building validated image-first Wayground math quizzes from Word or PDF.,1
+english-error-cipher,https://github.com/mathruffian-dot/english-error-cipher,將英文單字轉換為「物品圖像＋首字母錯誤拼寫」的視覺偵錯解謎題卡與互動 HTML 闖關網頁的 Agent Skill。,1
+soil-teaching-deck,https://github.com/mathruffian-dot/soil-teaching-deck,SOIL 全科教學簡報技能（各科通用、零金鑰）— 依李俊儀教授 SOIL 六引擎，把任何學科教材轉成有教學力的 .pptx,1
+soil-english-deck,https://github.com/mathruffian-dot/soil-english-deck,SOIL 英文教學簡報技能（英文科專用、零金鑰）,1
+opencode-lazy-packs,https://github.com/mathruffian-dot/opencode-lazy-packs,OpenCode 懶人包：丟一份 MD 檔給 agent，它照著把設定做完,1
+ai-agent-ep03,https://mathruffian-dot.github.io/ai-agent-ep03/,AI Agent 基本功 EP03 隨附資料：簡報、老師 Python 工具清單、給 Agent 讀的一鍵安裝檔,1
+notebooklm-mcp-lazy-pack,https://github.com/mathruffian-dot/notebooklm-mcp-lazy-pack,讓 AntiGravity 一鍵連上 NotebookLM MCP 的懶人包（OAuth 瀏覽器授權，實機驗證過的設定格式與地雷清單）,1
+opencode-draw-free,https://github.com/mathruffian-dot/opencode-draw-free,免費 AI 生圖技能 for OpenCode/Claude Code — 零 API Key、零 Python、零 GPU，只要 Windows PowerShell + Pollinations.ai,1
+math-cockpit,https://mathruffian-dot.github.io/math-cockpit/,國中數學教學駕駛艙 — 互動式黑板粉筆風格教學平台,1
+notebooklm-agent-app,https://github.com/mathruffian-dot/notebooklm-agent-app,用 Agent（opencode）操控 NotebookLM 或替代與強化 NotebookLM 的其他功能,1
+cross-device-agent-skills,https://github.com/mathruffian-dot/cross-device-agent-skills,跨電腦專案管理三技能：初始化專案、開工、收工,1
+teaching-exam-skills,https://github.com/mathruffian-dot/teaching-exam-skills,國中數學命題/審題/幾何配圖/形成性評量小遊戲 — 可供 AI agent 使用的 Agent Skills 集（繁體中文）,1
+audio-to-srt,https://github.com/mathruffian-dot/audio-to-srt,音訊/影片自動生成乾淨 SRT 字幕 — Groq Whisper 雲端＋本地備援，AI Agent 字幕技能（繁體中文）,1
+voxcpm2-voice-cloner,https://github.com/mathruffian-dot/voxcpm2-voice-cloner,VoxCPM2 voice cloner with auto GPU detection (CUDA/XPU/CPU) and Ultimate Cloning support,1
+wordwall-cli,https://mathruffian-dot.github.io/wordwall-cli/,用 CLI（非 MCP）讓 Agent 操作 Wordwall 的工具與技能,1
+claude-speak-skill,https://mathruffian-dot.github.io/claude-speak-skill/,Claude Code 快速語音回覆技能（speak）+ 用語音回答全域設定：Edge-TTS 台灣中文、三層備援、行內無視窗播放,1
+agent-speak-skill,https://github.com/mathruffian-dot/agent-speak-skill,讓 AI Agent 用語音回答你 — 免費 Edge-TTS 串流語音回覆技能（Claude Code/Codex/OpenCode/AntiGravity 通用，零金鑰、首聲約 1-2 秒、無視窗）,1
+rdq-skill-opencode,https://github.com/mathruffian-dot/rdq-skill-opencode,RDQ Method 需求探索四象限法 — OpenCode 版 Skill。動工前用四象限訪談挖出需求，產出規格卡確認後才執行。,1
+rdq-skill,https://github.com/mathruffian-dot/rdq-skill,RDQ Method 需求探索四象限法 — 一個給 Claude Code 用的需求訪談 Skill。動工前用四象限訪談挖出需求，產出規格卡確認後才執行。,1
+opencode-workshop-3day,https://mathruffian-dot.github.io/opencode-workshop-3day/,三天 AI Agent 實作工作坊 學員版｜六個半天、六個作品｜三師爸 Sense Bar,1
+classroom-agent-kit-antigravity2,https://github.com/mathruffian-dot/classroom-agent-kit-antigravity2,AntiGravity 2 Google Classroom 安全 CLI 與 clasp 範本,1
+clasp-netlify-mcp-guide,https://github.com/mathruffian-dot/clasp-netlify-mcp-guide,Clasp 雲端部署 + Netlify MCP 雙向閉環網頁系統：Agent 安裝與避坑指南,1
+clasp-gas-guide,https://github.com/mathruffian-dot/clasp-gas-guide,純 GAS Web App 零後端雙向閉環：Agent 安裝步驟與避坑指南,1
+antigravity-lazy-pack,https://github.com/mathruffian-dot/antigravity-lazy-pack,AntiGravity 專屬懶人包文件（不含個人資料與研究產物）,1
+r-mcp-agent-guide,https://github.com/mathruffian-dot/r-mcp-agent-guide,用自然語言控制 R：讓 Claude Code / Codex / Gemini / OpenCode 透過 MCP 驅動 R 統計引擎的安裝說明書,1
+gem-to-agent-kit,https://github.com/mathruffian-dot/gem-to-agent-kit,讓任何 AI agent 化身升級顧問，把 Google Gemini 的 Gem 升級成 Agent 工作流（主打 Antigravity）,1
+claude-video-specs-lite,https://github.com/mathruffian-dot/claude-video-specs-lite,影片製作規範研習簡易版（移除需付費 API 的功能）,1
+claude-video-specs,https://github.com/mathruffian-dot/claude-video-specs,三類影片製作規範 + 可 fork 的範例專案。給 AI agent 和創作者用。,1
+chatgpt-app-ai-agent-workshop-kit-antigravity2,https://github.com/mathruffian-dot/chatgpt-app-ai-agent-workshop-kit-antigravity2,AntiGravity 2 教師 AI Agent 一日研習資源包,1
+codex-lazy-packs-antigravity2,https://github.com/mathruffian-dot/codex-lazy-packs-antigravity2,AntiGravity 2 教師工作流懶人包 Skills,1
+codex-lazy-packs,https://github.com/mathruffian-dot/codex-lazy-packs,OpenAI Codex CLI 懶人包：對應 Claude Code 懶人包的平行版本,1
+claude-code-lazy-packs,https://github.com/mathruffian-dot/claude-code-lazy-packs,Claude Code 懶人包：每支教學影片附一個 MD 檔，丟給 Claude Code 就能自動完成。,1
+sensebar-agent-knowledge-vault-builder,https://github.com/mathruffian-dot/sensebar-agent-knowledge-vault-builder,用 Agent 擷取 YouTube 字幕、建立頻道知識庫的自動化工作流,1
+soil-deck-skills,https://github.com/mathruffian-dot/soil-deck-skills,SOIL 教學簡報技能集：全圖 .pptx / 可編輯 .pptx / 互動 HTML — 可供 AI agent 使用的 Agent Skills（繁體中文，gpt-image-2）,1
+pollinations-draw,https://github.com/mathruffian-dot/pollinations-draw,OpenCode/Claude Code 免費 AI 生圖技能（Pollinations.ai，免金鑰）,1
+media-literacy-2026,https://github.com/mathruffian-dot/media-literacy-2026,媒體素養 × 短影音教學資源包，可被 AI Agent 自動重建,1
+classroom-tools,https://github.com/mathruffian-dot/classroom-tools,Google Classroom 自動化（clasp + Apps Script）：列課程、列學生、貼公告、建作業,1
+2026-youtube,https://github.com/mathruffian-dot/2026-YouTube,YouTube 影片自動化生產線：剪輯、字幕、封面、說明、SEO 一條龍,1
+gem-to-skill-kit,https://github.com/mathruffian-dot/gem-to-skill-kit,Guide Google AntiGravity users to inventory Gemini Gems and upgrade selected Gems into portable Agent Skills.,1
+homeroom-copilot,https://github.com/mathruffian-dot/homeroom-copilot,Privacy-safe AI homeroom project scaffolder with shared indexing and private student-data isolation,1
+clasp-gas-skill,https://github.com/mathruffian-dot/clasp-gas-skill,跨 agent 通用的 clasp ＋ Google Apps Script 連線技能（Claude Code / ChatGPT App / opencode / AntiGravity 2）,1
+taichung-math-agent-workshop,https://mathruffian-dot.github.io/taichung-math-agent-workshop/,2026 臺中數學科研習：數位教學與 AI Agent（Reveal.js 互動簡報）,1
+cloudflare-oauth-guide-for-agents,https://github.com/mathruffian-dot/cloudflare-oauth-guide-for-agents,桌面 AI Agent 的 Cloudflare Wrangler OAuth 連線指南，避免瀏覽器未開啟與重複登入,1
+soil-image-deck,https://github.com/mathruffian-dot/soil-image-deck,"SOIL image-first teaching deck skill with YAML design system, golden samples, and rounded Traditional Chinese typography",1
+wordwall-cli-opencode,https://github.com/mathruffian-dot/wordwall-cli-opencode,Wordwall CLI 的 OpenCode 技能版,1
+chatgpt-codex-youtube-workflow,https://github.com/mathruffian-dot/chatgpt-codex-youtube-workflow,把原始口播影片變成完整 YouTube 上架包的 ChatGPT App / Codex 自動化工作流：去靜音剪輯、Groq Whisper 字幕、標題候選、內建生圖封面、描述與 SEO、短片。含完整中文文件。,1
+claude-code-youtube-workflow,https://github.com/mathruffian-dot/claude-code-youtube-workflow,把原始口播影片變成完整 YouTube 上架包的 Claude Code 自動化工作流：去靜音剪輯、Groq Whisper 字幕、標題候選、AI 封面、描述與 SEO、短片。含完整中文文件。,1
+ai-agent-ep04,https://mathruffian-dot.github.io/ai-agent-ep04/,AI Agent 基本功 EP04：連接外部工具（Google 家 vs 非 Google、通道×授權）— 三師爸 Sense Bar,1
+xiaoke-cockpit,https://github.com/mathruffian-dot/xiaoke-cockpit,小克指揮台：用語音派工給 Claude Code／Codex／OpenCode 三個 headless agent,1
+english-match-game,https://mathruffian-dot.github.io/english-match-game/,英文單字配對遊戲與課堂工具網站（Supabase 後端）,1
+padlet-auto-board,https://github.com/mathruffian-dot/padlet-auto-board,跨 agent 通用的 Padlet 自動組板技能 — 一句話把教材變成結構化的 Padlet 互動牆，安裝時自動檢查並引導安裝 padlet-mcp,1
+padlet-mcp,https://github.com/mathruffian-dot/padlet-mcp,讓 AI Agent 直接操作 Padlet 的 MCP Server,1
+teacher-ai-pain-points-report,https://mathruffian-dot.github.io/teacher-ai-pain-points-report/,教師對 AI 教學協助需求的 Padlet 去識別化視覺分析報告,1
+padlet-assets,https://github.com/mathruffian-dot/padlet-assets,Padlet 教學圖床：draw 技能生成的圖片，以 raw 網址掛到卡片,1
+supabase-connect-skill,https://github.com/mathruffian-dot/supabase-connect-skill,跨 agent 通用的 Supabase 連線技能，強制開啟並驗證 RLS（Claude Code / ChatGPT App / opencode / AntiGravity 2）,1
+image-vision-sidecar,https://github.com/mathruffian-dot/image-vision-sidecar,讓純文字模型（DeepSeek/GLM）間接讀圖的免費 Vision Sidecar：Groq API 把 PDF/PPTX/DOCX/圖片轉成繁中 Markdown,1
+opencode-presentation-skills,https://github.com/mathruffian-dot/opencode-presentation-skills,OpenCode 版整合簡報技能：SOIL、PptxGenJS、互動 HTML 與 Draw 圖片式簡報,1
+cross-device-agent-skills-antigravity2,https://github.com/mathruffian-dot/cross-device-agent-skills-antigravity2,AntiGravity 2 跨裝置專案初始化、開工與收工 Skills,1
+teaching-assets,https://github.com/mathruffian-dot/teaching-assets,教學素材庫,1
+cross-device-agent-skills-chatgpt-app,https://github.com/mathruffian-dot/cross-device-agent-skills-chatgpt-app,ChatGPT App 三層專案工作流：專案初始化、開工、收工，自動偵測 GitHub 與 Obsidian並優雅降級,1
+soil-teaching-deck-chatgpt-app,https://github.com/mathruffian-dot/soil-teaching-deck-chatgpt-app,SOIL 六引擎的 ChatGPT App／Codex 教學簡報技能：可編輯 PPTX、逐階段確認與完整 QA,1
+chatgpt-app-ai-agent-workshop-kit,https://github.com/mathruffian-dot/chatgpt-app-ai-agent-workshop-kit,ChatGPT App／Codex 教師研習資源包：設定、語音正規化、簡報、影片與 Skill 安裝入口,1
+tools9,https://mathruffian-dot.github.io/classroom-tools-9/,國中課堂九種常用工具的單頁應用（抽籤、計時、計分等）,1
+classroom-tools-9,https://mathruffian-dot.github.io/classroom-tools-9/,國中課堂九種常用工具的單頁應用（抽籤、計時、計分等）,1
+cross-device-agent-skills-opencode,https://github.com/mathruffian-dot/cross-device-agent-skills-opencode,跨電腦 Agent 工作流三技能（OpenCode 版）：開工／收工／專案初始化，三層級自動偵測、優雅降級,1
+rdq-skill-chatgpt-app,https://github.com/mathruffian-dot/rdq-skill-chatgpt-app,RDQ Method — ChatGPT App 版：以四象限需求訪談產出可確認的規格卡,1
+yaml-infographic,https://github.com/mathruffian-dot/yaml-infographic,"YAML-driven single-canvas infographic skill with baked/plate modes, validated layouts, and Traditional Chinese tech-calm styling",1
+yaml-image-deck,https://github.com/mathruffian-dot/yaml-image-deck,"YAML-driven image deck skill with controlled layouts, golden-sample style locking, and rounded Traditional Chinese typography",1
+netlify-deploy,https://github.com/mathruffian-dot/netlify-deploy,教學網頁一鍵部署技能 — 讓 AI Agent 用 Netlify CLI 部署互動教材並取得公開網址,1
+academic-reference-finder,https://github.com/mathruffian-dot/academic-reference-finder,學術文獻查找技能（零金鑰）— 期刊優先、附完整引用格式、優先提供免費全文連結,1
+chart-maker,https://github.com/mathruffian-dot/chart-maker,教學/科展資料視覺化圖表技能（零金鑰）— 互動 HTML + 高畫質 SVG，配色排版統一,1
+tunghai-ai-agent-deck,https://mathruffian-dot.github.io/tunghai-ai-agent-deck/,tunghai-ai-agent-deck,1
+media-shorts-workshop-2026,https://mathruffian-dot.github.io/media-shorts-workshop-2026/,媒體素養與短影音創作教學實務研習簡報（2026-07-04）,1
+ai-teaching-power-workshop,https://mathruffian-dot.github.io/ai-teaching-power-workshop/,ai-teaching-power-workshop,1
+20260707-ai-admin-demo,https://mathruffian-dot.github.io/20260707-ai-admin-demo/,學校行政重複事務 AI Demo 地圖,1
+2026-bada-tv-slides,https://github.com/mathruffian-dot/2026-bada-tv-slides,2026-bada-tv-slides,1
+ai-agents-edu-nsysu,https://mathruffian-dot.github.io/ai-agents-edu-nsysu/,ai-agents-edu-nsysu,1
+ntcu-codex-workshop-video,https://github.com/mathruffian-dot/ntcu-codex-workshop-video,Codex video workflow for NTCU education research and assessment workshop,1
+codex-presentation-skills,https://github.com/mathruffian-dot/codex-presentation-skills,Codex Skills for editable PPTX teaching decks and offline HTML slide decks,1
+taigi,https://mathruffian-dot.github.io/taigi-teaching-agent-plan/,符合臺灣 108 課綱的臺語教材 AI Agent 公開建置計畫,1
+taigi-teaching-agent-plan,https://mathruffian-dot.github.io/taigi-teaching-agent-plan/,符合臺灣 108 課綱的臺語教材 AI Agent 公開建置計畫,1
+superteacher,https://mathruffian-dot.github.io/super-teacher-2026/,SUPER 教師全國決選書面資料與參訪議程,1
+super-teacher-2026,https://mathruffian-dot.github.io/super-teacher-2026/,SUPER 教師全國決選書面資料與參訪議程,1
+ai-agent-english-workshop,https://mathruffian-dot.github.io/ai-agent-english-workshop/,AI Agent 英文教學實戰工作坊（3小時）研習簡報,1
+claude-html-slide-builder,https://github.com/mathruffian-dot/claude-html-slide-builder,Claude Code Skill：教材 → AI 互動 Reveal.js HTML 簡報 + GitHub Pages 一鍵部署,1
+claude-html-slide-builder-lite,https://github.com/mathruffian-dot/claude-html-slide-builder-lite,HTML 互動簡報技能研習簡易版（移除需付費 API 的功能）,1
+classroom-agent-kit,https://github.com/mathruffian-dot/classroom-agent-kit,Google Classroom 雙通道整合套件：網頁前端同步 + Agent 操作,1
+laptop-1to1-classroom,https://mathruffian-dot.github.io/laptop-1to1-classroom/,1:1 教室筆電課堂應用研習簡報（含 AI 教學）,1
+cli-orchestrator,https://github.com/mathruffian-dot/cli-orchestrator,用一個總指揮 AI headless 遙控 agy/codex/opencode 三大 CLI，全文落地、只回精簡摘要省 token,1
+math-8-2-visual-deck,https://mathruffian-dot.github.io/math-8-2-visual-deck/,國中數學八下整冊視覺化拖拉互動 HTML 簡報,1
+quadratic,https://mathruffian-dot.github.io/quadratic-function-graph/,九年級數學「二次函數圖形」互動教學簡報：Canvas 滑桿即時繪圖 + Firebase 文字雲/投票 + QR code（Reveal.js）,1
+quadratic-function-graph,https://mathruffian-dot.github.io/quadratic-function-graph/,九年級數學「二次函數圖形」互動教學簡報：Canvas 滑桿即時繪圖 + Firebase 文字雲/投票 + QR code（Reveal.js）,1
+claude-code-video-kit,https://github.com/mathruffian-dot/claude-code-video-kit,給 Claude Code 的三類影片製作 kit，Windows + Node 24 已驗證,1
+codex-video-specs,https://github.com/mathruffian-dot/codex-video-specs,"Codex agents video specs for event, teaching, and social explainer videos",1
+html-vs-markdown,https://mathruffian-dot.github.io/html-vs-markdown/,HTML vs Markdown AI 輸出格式辯論簡報（Reveal.js）,1
+fraction,https://mathruffian-dot.github.io/2026-fraction-cooking-rescue/,分數料理救援隊：國小六年級「分數的除法」互動數學遊戲,1
+2026-fraction-cooking-rescue,https://mathruffian-dot.github.io/2026-fraction-cooking-rescue/,分數料理救援隊：國小六年級「分數的除法」互動數學遊戲,1
+2026-dreamn-0524-slides,https://mathruffian-dot.github.io/2026-dreamN-0524-slides/,2026 夢N AIPACK 工作坊上半場簡報（國小數學 × AI Agent）,1
+delin,https://mathruffian-dot.github.io/delin-campus-tour-system/,德林校園導覽系統互動網頁,1
+delin-campus-tour-system,https://mathruffian-dot.github.io/delin-campus-tour-system/,德林校園導覽系統互動網頁,1
+livecloud,https://mathruffian-dot.github.io/firebase-wordcloud/,課堂文字雲：Firebase Firestore 即時彙整的投稿文字雲網站,1
+firebase-wordcloud,https://mathruffian-dot.github.io/firebase-wordcloud/,課堂文字雲：Firebase Firestore 即時彙整的投稿文字雲網站,1
+tetris,https://mathruffian-dot.github.io/tetris-game/,A small browser Tetris game built with HTML Canvas,1
+tetris-game,https://mathruffian-dot.github.io/tetris-game/,A small browser Tetris game built with HTML Canvas,1
+airport,https://mathruffian-dot.github.io/airport-vocab-game/,機場情境英語單字拖拉互動網頁（報到、安檢、登機門）,1
+airport-vocab-game,https://mathruffian-dot.github.io/airport-vocab-game/,機場情境英語單字拖拉互動網頁（報到、安檢、登機門）,1
+20260523-collegiate-seminar,https://mathruffian-dot.github.io/20260523-collegiate-seminar/,20260523-collegiate-seminar,1
+ai-agent-education,https://mathruffian-dot.github.io/ai-agent-education/,AI Agent 教育應用介紹網頁,1
+2026opencode0523-edu,https://github.com/mathruffian-dot/2026opencode0523-edu,OpenCode 5/23 教育場次簡報,1
+coordinate,https://mathruffian-dot.github.io/opencode-coordinate-game/,座標練習互動遊戲,1
+opencode-coordinate-game,https://mathruffian-dot.github.io/opencode-coordinate-game/,座標練習互動遊戲,1
+inequality,https://mathruffian-dot.github.io/ch4-2-inequality-slides/,翰林版國中數學 1 下 4-2「解一元一次不等式及其應用」12 頁互動簡報,1
+ch4-2-inequality-slides,https://mathruffian-dot.github.io/ch4-2-inequality-slides/,翰林版國中數學 1 下 4-2「解一元一次不等式及其應用」12 頁互動簡報,1
+shouzhu,https://mathruffian-dot.github.io/shouzhu-daitu/,互動式華語成語教學頁：守株待兔｜Interactive Chinese idiom lesson,1
+shouzhu-daitu,https://mathruffian-dot.github.io/shouzhu-daitu/,互動式華語成語教學頁：守株待兔｜Interactive Chinese idiom lesson,1
+graph,https://mathruffian-dot.github.io/math-graph-tool/,數學函數與方程式繪圖工具：2D 函數／隱式方程式與 3D 曲面,1
+math-graph-tool,https://mathruffian-dot.github.io/math-graph-tool/,數學函數與方程式繪圖工具：2D 函數／隱式方程式與 3D 曲面,1
+20260506-tetris-game,https://mathruffian-dot.github.io/20260506-tetris-game/,20260506-tetris-game,1
+2026database,https://mathruffian-dot.github.io/2026database/,Codex 基本功 EP09–EP12 教學實作：Supabase 成績記錄本與班級互動工具,1
+2026-kh-puzzle,https://mathruffian-dot.github.io/2026-kh-puzzle/,高雄「AI 玩數學」謎題設計教材與互動網頁,1
+notype,https://github.com/mathruffian-dot/notype,AI 語音輸入工具（Electron）— 用說的取代打字,1
+notebooklm-archive,https://github.com/mathruffian-dot/notebooklm-archive,NotebookLM 產出留存庫（簡報、報告等）,1
+blackhole,https://mathruffian-dot.github.io/blackhole-war/,黑洞戰爭 — 國中七年級直角坐標平面數位桌遊,1
+blackhole-war,https://mathruffian-dot.github.io/blackhole-war/,黑洞戰爭 — 國中七年級直角坐標平面數位桌遊,1
+math-8b-functions-interactive,https://github.com/mathruffian-dot/math-8b-functions-interactive,八年級數學「函數與函數圖形」互動教學簡報，以 SOIL Teaching Deck Workflow 產出,1
+math-7b-ch2-games,https://mathruffian-dot.github.io/math-7b-ch2-games/,七年級數學第二章互動遊戲,1
+seat,https://mathruffian-dot.github.io/seat-chart-generator/,座位表產生器網頁,1
+seat-chart-generator,https://mathruffian-dot.github.io/seat-chart-generator/,座位表產生器網頁,1
+sequence,https://mathruffian-dot.github.io/math-sequence-games/,八年級數學「數列與級數」互動小遊戲網站，包含等差數列、等差級數、等比數列共8個單元遊戲,1
+math-sequence-games,https://mathruffian-dot.github.io/math-sequence-games/,八年級數學「數列與級數」互動小遊戲網站，包含等差數列、等差級數、等比數列共8個單元遊戲,1
+minihtmlgame,https://github.com/mathruffian-dot/minihtmlgame,minihtmlgame,1
+dataforhtml,https://github.com/mathruffian-dot/dataforhtml,提供外部程式碼的工具或圖片連結,1
+pdf-converter,https://github.com/mathruffian-dot/pdf-converter,將PDF簡報轉換成PPTX簡報,1
+publicteach,https://mathruffian-dot.github.io/publicteach/,公開觀議課,1
+cutpdf,https://mathruffian-dot.github.io/cutpdf/,裁切pdf,1
